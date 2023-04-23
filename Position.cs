@@ -1,9 +1,8 @@
 namespace RubikCube
 {
-    public class Position 
+    public class Position
     {
-        public ColourMatrix? ColourMatrix {get; set;}
-        public Tuple<int, int, int>? Coordinates {get; set;}
-
+        public ColourMatrix? ColourMatrix { get; set; }
+        public Tuple<int, int, int>? Coordinates { get; set; }
     }
 }

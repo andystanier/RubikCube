@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Andy\\OneDrive\\Documents\\Repositories\\RubikCube\\RubikCube.csproj": {}
+    "c:\\Users\\Andy\\OneDrive\\Documents\\Repositories\\RubikCube\\RubikCube.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Andy\\OneDrive\\Documents\\Repositories\\RubikCube\\RubikCube.csproj": {
+    "c:\\Users\\Andy\\OneDrive\\Documents\\Repositories\\RubikCube\\RubikCube.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Andy\\OneDrive\\Documents\\Repositories\\RubikCube\\RubikCube.csproj",
+        "projectUniqueName": "c:\\Users\\Andy\\OneDrive\\Documents\\Repositories\\RubikCube\\RubikCube.csproj",
         "projectName": "RubikCube",
-        "projectPath": "C:\\Users\\Andy\\OneDrive\\Documents\\Repositories\\RubikCube\\RubikCube.csproj",
+        "projectPath": "c:\\Users\\Andy\\OneDrive\\Documents\\Repositories\\RubikCube\\RubikCube.csproj",
         "packagesPath": "C:\\Users\\Andy\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Andy\\OneDrive\\Documents\\Repositories\\RubikCube\\obj\\",
+        "outputPath": "c:\\Users\\Andy\\OneDrive\\Documents\\Repositories\\RubikCube\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Andy\\AppData\\Roaming\\NuGet\\NuGet.Config"

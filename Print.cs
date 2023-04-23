@@ -4,7 +4,7 @@ namespace RubikCube
 {
     public class Print : IDraw
     {
-        private Position _position;
+
         public void Create(IEnumerable<Position>? positions)
         {
             if (positions != null && positions.Any())
@@ -14,7 +14,6 @@ namespace RubikCube
                     Colour xy = position.ColourMatrix.xyPlane;
                     Colour xz = position.ColourMatrix.xzPlane;
                     Colour yz = position.ColourMatrix.yzPlane;
-                    //Console.WriteLine($"{position?.Coordinates?.ToString()} - ({xy.ToAbbr()}, {xz.ToAbbr()}, {yz.ToAbbr()})");
                 }
                 CreateLayout(positions);
             }
@@ -46,70 +45,119 @@ namespace RubikCube
                              .ToArray();
         }
 
+        public IEnumerable<string> StringRepresentation(IEnumerable<Position>? positions)
+        {
+            List<string> stringRep = new List<string>();
+            foreach (Position position in positions)
+            {
+                StringBuilder sb = new StringBuilder();
+
+                Colour xy = position.ColourMatrix.xyPlane;
+                Colour xz = position.ColourMatrix.xzPlane;
+                Colour yz = position.ColourMatrix.yzPlane;
+
+                int xCoord = position.Coordinates.Item1;
+                int yCoord = position.Coordinates.Item2;
+                int zCoord = position.Coordinates.Item3;
+
+                string xCoordFormated = xCoord.ToString("+0;-#");
+                string yCoordFormated = yCoord.ToString("+0;-#");
+                string zCoordFormated = zCoord.ToString("+0;-#");
+
+                sb.Append($" __________ ");
+                sb.AppendLine();
+                sb.Append($"|          |");
+                sb.AppendLine();
+                sb.Append($"| {xy.ToAbbr()}, {xz.ToAbbr()}, {yz.ToAbbr()}  |");
+                sb.AppendLine();
+                sb.Append($"| {xCoordFormated},{yCoordFormated},{zCoordFormated} |");
+                sb.AppendLine();
+                sb.Append($"|__________|");
+                sb.AppendLine();
+
+                stringRep.Add(sb.ToString());
+
+            }
+            return stringRep;
+        }
 
         public StringBuilder BuildTheArray(IEnumerable<Position>? positions)
         {
             StringBuilder sb = new StringBuilder();
-            foreach (Position position in positions)
+            // 12 x 9 grid.
+            int rows = 9;
+            int cols = 12;
+
+            List<string> stringRepOfPostions = StringRepresentation(positions).ToList();
+
+            // sb.Append(stringRepOfPostions[0]);
+
+            // ConnectPostitionsToGrid();
+
+
+            int[] blanks = GetBlankSquares();
+
+
+            for (int i = 1; i <= rows; i++)
             {
-                Colour xy = position.ColourMatrix.xyPlane;
-                Colour xz = position.ColourMatrix.xzPlane;
-                Colour yz = position.ColourMatrix.yzPlane;
-                //Console.WriteLine($"{position?.Coordinates?.ToString()} - ({xy.ToAbbr()}, {xz.ToAbbr()}, {yz.ToAbbr()})");
-
-
-                // 12 x 9 grid.
-                int rows = 9;
-                int cols = 12;
-
-                int[] blanks = GetBlankSquares();
-
-
-                for (int i = 1; i <= rows; i++)
+                for (int j = 1; j <= cols; j++)
                 {
-                    for (int j = 1; j <= cols; j++)
-                    {
-                        if (blanks.Contains((i * 100 + j)))
-                            sb.Append($"         ");
-                        else
-                            sb.Append($" _______ ");
-                    }
-                    sb.AppendLine();
-
-
-                    for (int j = 1; j <= cols; j++)
-                    {
-                        if (blanks.Contains((i * 100 + j)))
-                            sb.Append($"         ");
-                        else
-                            sb.Append($"|       |");
-                    }
-                    sb.AppendLine();
-
-
-                    for (int j = 1; j <= cols; j++)
-                    {
-                        int number = (i * 100 + j);
-                        if (blanks.Contains(number))
-                            sb.Append($"         ");
-                        else
-                            sb.Append($"| {xy.ToAbbr()},{xz.ToAbbr()},{yz.ToAbbr()} |");
-                    }
-                    sb.AppendLine();
-
-
-                    for (int j = 1; j <= cols; j++)
-                    {
-                        if (blanks.Contains((i * 100 + j)))
-                            sb.Append($"         ");
-                        else
-                            sb.Append($"|_______|");
-                    }
-                    sb.AppendLine();
-
+                    if (blanks.Contains((i * 100 + j)))
+                        sb.Append($"         ");
+                    else
+                        sb.Append($" _______ ");
                 }
+                sb.AppendLine();
+
+
+                for (int j = 1; j <= cols; j++)
+                {
+                    if (blanks.Contains((i * 100 + j)))
+                        sb.Append($"         ");
+                    else
+                        sb.Append($"|       |");
+                }
+                sb.AppendLine();
+
+
+                for (int j = 1; j <= cols; j++)
+                {
+                    int number = (i * 100 + j);
+                    if (blanks.Contains(number))
+                        sb.Append($"         ");
+                    else
+                        sb.Append($"|  {number}  |");
+                }
+                sb.AppendLine();
+
+                for (int j = 1; j <= cols; j++)
+                {
+                    if (blanks.Contains((i * 100 + j)))
+                        sb.Append($"         ");
+                    else
+                        sb.Append($"|_______|");
+                }
+                sb.AppendLine();
             }
+
             return sb;
+        }
+
+        public void ConnectPostitionsToGrid(IEnumerable<Position> positions)
+        {
+            // We need to map the PositionMatrix values to the Grid that we're using to visualise.
+            // This won't be pretty.
+
+            Dictionary<int, Position> positionInGrid = new Dictionary<int, Position>();
+            // List<Position> positionList = positions.ToList();
+            // positionList.(p => positionInGrid.Add(104, p));
+
+
+
+
+
+
+
         }
     }
 
