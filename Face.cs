@@ -6,7 +6,7 @@ namespace RubikCube
         public char Abbreviation { get; set; }
         public IEnumerable<Position> Positions { get; set; }
 
-        public void Rotate()
+        public void Rotate(Direction direction)
         {
             throw new NotImplementedException();
         }

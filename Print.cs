@@ -4,30 +4,97 @@ namespace RubikCube
 {
     public class Print : IDraw
     {
+        private IDictionary<int, string> _positionInGrid = new Dictionary<int, string>();
+        private IDictionary<int, string> _coloursInGrid = new Dictionary<int, string>();
 
-        public void Create(IEnumerable<Position>? positions)
+        public void Create(IEnumerable<Face> faces, string? argument = null)
         {
-            if (positions != null && positions.Any())
+            // To print in a 2D representation of the Cube.
+            StringBuilder sb = BuildTheArray(faces);
+            Console.WriteLine(sb.ToString());
+        }
+
+        private StringBuilder BuildTheArray(IEnumerable<Face> faces)
+        {
             {
-                foreach (Position position in positions)
+                StringBuilder sb = new StringBuilder();
+                // 12 x 9 grid.
+                int rows = 9;
+                int cols = 12;
+
+                ConnectPositionsToGrid(faces);
+
+                int[] blanks = GetBlankSquares();
+
+
+                for (int i = 1; i <= rows; i++)
                 {
-                    Colour xy = position.ColourMatrix.xyPlane;
-                    Colour xz = position.ColourMatrix.xzPlane;
-                    Colour yz = position.ColourMatrix.yzPlane;
+                    for (int j = 1; j <= cols; j++)
+                    {
+                        if (blanks.Contains(i * 100 + j))
+                            sb.Append($"            ");
+                        else
+                            sb.Append($" __________ ");
+                    }
+                    sb.AppendLine();
+
+
+                    for (int j = 1; j <= cols; j++)
+                    {
+                        if (blanks.Contains(i * 100 + j))
+                            sb.Append($"            ");
+                        else
+                            sb.Append($"|          |");
+                    }
+                    sb.AppendLine();
+
+
+                    // for (int j = 1; j <= cols; j++)
+                    // {
+                    //     int number = (i * 100 + j);
+                    //     if (blanks.Contains(number))
+                    //         sb.Append($"            ");
+                    //     else
+                    //         sb.Append($"|   {number}    |");
+                    // }
+                    // sb.AppendLine();
+
+
+                    // for (int j = 1; j <= cols; j++)
+                    // {
+                    //     int number = i * 100 + j;
+                    //     if (blanks.Contains(number))
+                    //         sb.Append($"            ");
+                    //     else
+                    //         sb.Append($"| {_positionInGrid[number]} |");
+                    // }
+                    // sb.AppendLine();
+
+                    for (int j = 1; j <= cols; j++)
+                    {
+                        int number = i * 100 + j;
+                        if (blanks.Contains(number))
+                            sb.Append($"            ");
+                        else
+                            sb.Append($"|     {_coloursInGrid[number]}    |");
+                    }
+                    sb.AppendLine();
+
+                    for (int j = 1; j <= cols; j++)
+                    {
+                        if (blanks.Contains(i * 100 + j))
+                            sb.Append($"            ");
+                        else
+                            sb.Append($"|__________|");
+                    }
+                    sb.AppendLine();
                 }
-                CreateLayout(positions);
+
+                return sb;
             }
         }
 
-        private void CreateLayout(IEnumerable<Position>? positions)
-        {
-
-            // To print in a 2D representation of the Cube.
-            StringBuilder sb = BuildTheArray(positions);
-            System.Console.WriteLine(sb.ToString());
-        }
-
-        public int[] GetBlankSquares()
+        private int[] GetBlankSquares()
         {
 
             int[] blanksRow1 = { 101, 102, 103, 107, 108, 109, 110, 111, 112 };
@@ -45,120 +112,64 @@ namespace RubikCube
                              .ToArray();
         }
 
-        public IEnumerable<string> StringRepresentation(IEnumerable<Position>? positions)
+
+        private void ConnectPositionsToGrid(IEnumerable<Face> faces)
         {
-            List<string> stringRep = new List<string>();
-            foreach (Position position in positions)
-            {
-                StringBuilder sb = new StringBuilder();
-
-                Colour xy = position.ColourMatrix.xyPlane;
-                Colour xz = position.ColourMatrix.xzPlane;
-                Colour yz = position.ColourMatrix.yzPlane;
-
-                int xCoord = position.Coordinates.Item1;
-                int yCoord = position.Coordinates.Item2;
-                int zCoord = position.Coordinates.Item3;
-
-                string xCoordFormated = xCoord.ToString("+0;-#");
-                string yCoordFormated = yCoord.ToString("+0;-#");
-                string zCoordFormated = zCoord.ToString("+0;-#");
-
-                sb.Append($" __________ ");
-                sb.AppendLine();
-                sb.Append($"|          |");
-                sb.AppendLine();
-                sb.Append($"| {xy.ToAbbr()}, {xz.ToAbbr()}, {yz.ToAbbr()}  |");
-                sb.AppendLine();
-                sb.Append($"| {xCoordFormated},{yCoordFormated},{zCoordFormated} |");
-                sb.AppendLine();
-                sb.Append($"|__________|");
-                sb.AppendLine();
-
-                stringRep.Add(sb.ToString());
-
-            }
-            return stringRep;
-        }
-
-        public StringBuilder BuildTheArray(IEnumerable<Position>? positions)
-        {
-            StringBuilder sb = new StringBuilder();
-            // 12 x 9 grid.
-            int rows = 9;
-            int cols = 12;
-
-            List<string> stringRepOfPostions = StringRepresentation(positions).ToList();
-
-            // sb.Append(stringRepOfPostions[0]);
-
-            // ConnectPostitionsToGrid();
-
-
-            int[] blanks = GetBlankSquares();
-
-
-            for (int i = 1; i <= rows; i++)
-            {
-                for (int j = 1; j <= cols; j++)
-                {
-                    if (blanks.Contains((i * 100 + j)))
-                        sb.Append($"         ");
-                    else
-                        sb.Append($" _______ ");
-                }
-                sb.AppendLine();
-
-
-                for (int j = 1; j <= cols; j++)
-                {
-                    if (blanks.Contains((i * 100 + j)))
-                        sb.Append($"         ");
-                    else
-                        sb.Append($"|       |");
-                }
-                sb.AppendLine();
-
-
-                for (int j = 1; j <= cols; j++)
-                {
-                    int number = (i * 100 + j);
-                    if (blanks.Contains(number))
-                        sb.Append($"         ");
-                    else
-                        sb.Append($"|  {number}  |");
-                }
-                sb.AppendLine();
-
-                for (int j = 1; j <= cols; j++)
-                {
-                    if (blanks.Contains((i * 100 + j)))
-                        sb.Append($"         ");
-                    else
-                        sb.Append($"|_______|");
-                }
-                sb.AppendLine();
-            }
-
-            return sb;
-        }
-
-        public void ConnectPostitionsToGrid(IEnumerable<Position> positions)
-        {
-            // We need to map the PositionMatrix values to the Grid that we're using to visualise.
+            // We need to map the PositionMatrix values of each face to the Grid that we're using to visualise.
             // This won't be pretty.
 
-            Dictionary<int, Position> positionInGrid = new Dictionary<int, Position>();
-            // List<Position> positionList = positions.ToList();
-            // positionList.(p => positionInGrid.Add(104, p));
+            IDictionary<int, string> positionInGrid = new Dictionary<int, string>();
+            IDictionary<int, string> coloursInGrid = new Dictionary<int, string>();
+
+            List<int> frontFaceIndexes = new List<int>() { 401, 402, 403, 501, 502, 503, 601, 602, 603 };
+            List<int> backFaceIndexes = new List<int>() { 407, 408, 409, 507, 508, 509, 607, 608, 609 };
+            List<int> upFaceIndexes = new List<int>() { 404, 405, 406, 504, 505, 506, 604, 605, 606 };
+            List<int> downFaceIndexes = new List<int>() { 410, 411, 412, 510, 511, 512, 610, 611, 612 };
+            List<int> leftFaceIndexes = new List<int>() { 104, 105, 106, 204, 205, 206, 304, 305, 306 };
+            List<int> rightFaceIndexes = new List<int>() { 704, 705, 706, 804, 805, 806, 904, 905, 906 };
 
 
+            Face frontFace = faces.FirstOrDefault(f => f.Abbreviation == 'F');
+            Face backFace = faces.FirstOrDefault(f => f.Abbreviation == 'B');
+            Face upFace = faces.FirstOrDefault(f => f.Abbreviation == 'U');
+            Face downFace = faces.FirstOrDefault(f => f.Abbreviation == 'D');
+            Face leftFace = faces.FirstOrDefault(f => f.Abbreviation == 'L');
+            Face rightFace = faces.FirstOrDefault(f => f.Abbreviation == 'R');
+
+            List<string> frontPositions = frontFace.Positions.Select(p => $"{p.Coordinates.Item1:+0;-#},{p.Coordinates.Item2:+0;-#},{p.Coordinates.Item3:+0;-#}").ToList();
+            List<string> backPositions = backFace.Positions.Select(p => $"{p.Coordinates.Item1:+0;-#},{p.Coordinates.Item2:+0;-#},{p.Coordinates.Item3:+0;-#}").ToList();
+            List<string> upPositions = upFace.Positions.Select(p => $"{p.Coordinates.Item1:+0;-#},{p.Coordinates.Item2:+0;-#},{p.Coordinates.Item3:+0;-#}").ToList();
+            List<string> downPositions = downFace.Positions.Select(p => $"{p.Coordinates.Item1:+0;-#},{p.Coordinates.Item2:+0;-#},{p.Coordinates.Item3:+0;-#}").ToList();
+            List<string> leftPositions = leftFace.Positions.Select(p => $"{p.Coordinates.Item1:+0;-#},{p.Coordinates.Item2:+0;-#},{p.Coordinates.Item3:+0;-#}").ToList();
+            List<string> rightPositions = rightFace.Positions.Select(p => $"{p.Coordinates.Item1:+0;-#},{p.Coordinates.Item2:+0;-#},{p.Coordinates.Item3:+0;-#}").ToList();
+
+            List<string> frontColours = frontFace.Positions.Select(p => $"{p.ColourMatrix.xyPlane.ToAbbr()}").ToList();
+            List<string> backColours = backFace.Positions.Select(p => $"{p.ColourMatrix.xyPlane.ToAbbr()}").ToList();
+            List<string> upColours = upFace.Positions.Select(p => $"{p.ColourMatrix.xzPlane.ToAbbr()}").ToList();
+            List<string> downColours = downFace.Positions.Select(p => $"{p.ColourMatrix.xzPlane.ToAbbr()}").ToList();
+            List<string> leftColours = leftFace.Positions.Select(p => $"{p.ColourMatrix.yzPlane.ToAbbr()}").ToList();
+            List<string> rightColours = rightFace.Positions.Select(p => $"{p.ColourMatrix.yzPlane.ToAbbr()}").ToList();
 
 
+            for (int i = 0; i < 9; i++)
+            {
+                positionInGrid.Add(frontFaceIndexes[i], frontPositions[i]);
+                positionInGrid.Add(backFaceIndexes[i], backPositions[i]);
+                positionInGrid.Add(upFaceIndexes[i], upPositions[i]);
+                positionInGrid.Add(downFaceIndexes[i], downPositions[i]);
+                positionInGrid.Add(leftFaceIndexes[i], leftPositions[i]);
+                positionInGrid.Add(rightFaceIndexes[i], rightPositions[i]);
 
+                coloursInGrid.Add(frontFaceIndexes[i], frontColours[i]);
+                coloursInGrid.Add(backFaceIndexes[i], backColours[i]);
+                coloursInGrid.Add(upFaceIndexes[i], upColours[i]);
+                coloursInGrid.Add(downFaceIndexes[i], downColours[i]);
+                coloursInGrid.Add(leftFaceIndexes[i], leftColours[i]);
+                coloursInGrid.Add(rightFaceIndexes[i], rightColours[i]);
+            }
 
-
+            _positionInGrid = positionInGrid;
+            _coloursInGrid = coloursInGrid;
         }
     }
-
 }

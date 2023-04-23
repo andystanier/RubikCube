@@ -5,15 +5,61 @@ namespace RubikCube
 
     public class Cube
     {
-        private readonly IDraw _draw;
-        private IEnumerable<Position> _positions;
-        public IEnumerable<Face> Faces { get; set; }
+        private readonly IDraw? _draw;
+        private IEnumerable<Position>? _positions;
+        private IEnumerable<Face>? _faces;
 
 
-        public Cube(IDraw draw)
+        public Cube(IDraw? draw, string? arguments = null)
         {
             _draw = draw;
+            _positions = new List<Position>();
+            _faces = new List<Face>();
             InitialiseCube();
+
+            // Default behaviour is to apply the rotations
+            // By providing an argument at the console interface, we can display the initial state
+            if (arguments == null)
+            {
+                PerformRotations();
+            }
+        }
+
+        public void Display(string? argument = null)
+        {
+            _draw?.Create(_faces!, argument);
+        }
+
+        private void PerformRotations()
+        {
+            foreach (var face in _faces!)
+            {
+                switch (face?.Name)
+                {
+                    case "Front":
+                        face.Positions.ToList().ForEach(p => p.ColourMatrix!.xyPlane = Colour.Red);
+                        break;
+                    case "Back":
+                        face.Positions.ToList().ForEach(p => p.ColourMatrix!.xyPlane = Colour.Orange);
+                        break;
+                    case "Up":
+                        face.Positions.ToList().ForEach(p => p.ColourMatrix!.xzPlane = Colour.Yellow);
+                        break;
+                    case "Down":
+                        face.Positions.ToList().ForEach(p => p.ColourMatrix!.xzPlane = Colour.Green);
+                        break;
+                    case "Left":
+                        face.Positions.ToList().ForEach(p => p.ColourMatrix!.yzPlane = Colour.Blue);
+                        break;
+                    case "Right":
+                        face.Positions.ToList().ForEach(p => p.ColourMatrix!.yzPlane = Colour.White);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            // throw new NotImplementedException();
+
         }
 
         private void InitialiseCube()
@@ -55,130 +101,73 @@ namespace RubikCube
                 {
                     Name = "Front",
                     Abbreviation = 'F',
-                    Positions = _positions.Where(p => p?.Coordinates?.Item3 == -1) //Z index is -1
+                    Positions = _positions!.Where(p => p?.Coordinates?.Item3 == -1) //Z index is -1
                 },
                 new Face()
                 {
                     Name = "Back",
                     Abbreviation = 'B',
-                    Positions = _positions.Where(p => p?.Coordinates?.Item3 == 1)  // Z index is 1
+                    Positions = _positions!.Where(p => p?.Coordinates?.Item3 == 1)  // Z index is 1
                 },
                 new Face()
                 {
                     Name = "Up",
                     Abbreviation = 'U',
-                    Positions = _positions.Where(p => p?.Coordinates?.Item2 == 1)  // Y index is 1
+                    Positions = _positions!.Where(p => p?.Coordinates?.Item2 == 1)  // Y index is 1
                 },
                 new Face()
                 {
                     Name = "Down",
                     Abbreviation = 'D',
-                    Positions = _positions.Where(p => p?.Coordinates?.Item2 == -1) // Y index is -1
+                    Positions = _positions!.Where(p => p?.Coordinates?.Item2 == -1) // Y index is -1
                 },
                 new Face()
                 {
                     Name = "Left",
                     Abbreviation = 'L',
-                    Positions = _positions.Where(p => p?.Coordinates?.Item1 == -1) // X index is -1
+                    Positions = _positions!.Where(p => p?.Coordinates?.Item1 == -1) // X index is -1
                 },
                 new Face()
                 {
                     Name = "Right",
                     Abbreviation = 'R',
-                    Positions = _positions.Where(p => p?.Coordinates?.Item1 == 1) // X index is -1
+                    Positions = _positions!.Where(p => p?.Coordinates?.Item1 == 1) // X index is -1
                 }
             };
-            Faces = faces.AsEnumerable<Face>();
+            _faces = faces.AsEnumerable<Face>();
         }
 
         private void InitialiseCubeColours()
         {
-            foreach (var face in Faces)
+            foreach (var face in _faces!)
             {
-                switch (face.Name)
+                switch (face?.Name)
                 {
                     case "Front":
-                        face.Positions.ToList().ForEach(p => p.ColourMatrix.xyPlane = Colour.Green);
+                        face.Positions.ToList().ForEach(p => p.ColourMatrix!.xyPlane = Colour.Green);
                         break;
                     case "Back":
-                        face.Positions.ToList().ForEach(p => p.ColourMatrix.xyPlane = Colour.Blue);
+                        face.Positions.ToList().ForEach(p => p.ColourMatrix!.xyPlane = Colour.Blue);
                         break;
                     case "Up":
-                        face.Positions.ToList().ForEach(p => p.ColourMatrix.xzPlane = Colour.White);
+                        face.Positions.ToList().ForEach(p => p.ColourMatrix!.xzPlane = Colour.White);
                         break;
                     case "Down":
-                        face.Positions.ToList().ForEach(p => p.ColourMatrix.xzPlane = Colour.Yellow);
+                        face.Positions.ToList().ForEach(p => p.ColourMatrix!.xzPlane = Colour.Yellow);
                         break;
                     case "Left":
-                        face.Positions.ToList().ForEach(p => p.ColourMatrix.yzPlane = Colour.Orange);
+                        face.Positions.ToList().ForEach(p => p.ColourMatrix!.yzPlane = Colour.Orange);
                         break;
                     case "Right":
-                        face.Positions.ToList().ForEach(p => p.ColourMatrix.yzPlane = Colour.Red);
+                        face.Positions.ToList().ForEach(p => p.ColourMatrix!.yzPlane = Colour.Red);
                         break;
                     default:
                         break;
                 }
             }
-
-
-            // foreach (var position in _positions)
-            // { 
-            //     int xCoordinate = position.Coordinates.Item1;
-            //     int yCoordinate = position.Coordinates.Item2;
-            //     int zCoordinate = position.Coordinates.Item3;
-
-            //     // Cube always starts the same.
-            //     switch (zCoordinate)  // Front to Back
-            //     {
-            //         case -1: // Front Face
-            //             position.ColourMatrix.xyPlane = Colour.Green;
-            //             break;
-            //         case 0: // Middle 'Face'
-            //             position.ColourMatrix.xyPlane = Colour.Empty;
-            //             break;
-            //         case 1: // Back Face
-            //             position.ColourMatrix.xyPlane = Colour.Blue;
-            //             break;
-            //         default:
-            //             break;
-            //     }
-
-            //     switch (yCoordinate)  // Bottom to Top
-            //     {
-            //         case -1: // Bottom Face
-            //             position.ColourMatrix.xzPlane = Colour.Yellow;
-            //             break;
-            //         case 0: // Middle 'Face'
-            //             position.ColourMatrix.xzPlane = Colour.Empty;
-            //             break;
-            //         case 1: // Top Face
-            //             position.ColourMatrix.xzPlane = Colour.White;
-            //             break;
-            //         default:
-            //             break;
-            //     }
-
-            //     switch (xCoordinate)  // Left to Right
-            //     {
-            //         case -1: // Left Face
-            //             position.ColourMatrix.yzPlane = Colour.Orange;
-            //             break;
-            //         case 0: // Middle 'Face'
-            //             position.ColourMatrix.yzPlane = Colour.Empty;
-            //             break;
-            //         case 1: // Right Face
-            //             position.ColourMatrix.yzPlane = Colour.Red;
-            //             break;
-            //         default:
-            //             break;
-            //     }
-            // }
         }
 
 
-        public void Display()
-        {
-            _draw?.Create(_positions);
-        }
+
     }
 }
