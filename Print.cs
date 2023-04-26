@@ -49,26 +49,26 @@ namespace RubikCube
                     sb.AppendLine();
 
 
-                    // for (int j = 1; j <= cols; j++)
-                    // {
-                    //     int number = (i * 100 + j);
-                    //     if (blanks.Contains(number))
-                    //         sb.Append($"            ");
-                    //     else
-                    //         sb.Append($"|   {number}    |");
-                    // }
-                    // sb.AppendLine();
+                    for (int j = 1; j <= cols; j++)
+                    {
+                        int number = (i * 100 + j);
+                        if (blanks.Contains(number))
+                            sb.Append($"            ");
+                        else
+                            sb.Append($"|   {number}    |");
+                    }
+                    sb.AppendLine();
 
 
-                    // for (int j = 1; j <= cols; j++)
-                    // {
-                    //     int number = i * 100 + j;
-                    //     if (blanks.Contains(number))
-                    //         sb.Append($"            ");
-                    //     else
-                    //         sb.Append($"| {_positionInGrid[number]} |");
-                    // }
-                    // sb.AppendLine();
+                    for (int j = 1; j <= cols; j++)
+                    {
+                        int number = i * 100 + j;
+                        if (blanks.Contains(number))
+                            sb.Append($"            ");
+                        else
+                            sb.Append($"| {_positionInGrid[number]} |");
+                    }
+                    sb.AppendLine();
 
                     for (int j = 1; j <= cols; j++)
                     {
@@ -121,12 +121,12 @@ namespace RubikCube
             IDictionary<int, string> positionInGrid = new Dictionary<int, string>();
             IDictionary<int, string> coloursInGrid = new Dictionary<int, string>();
 
-            List<int> frontFaceIndexes = new List<int>() { 401, 402, 403, 501, 502, 503, 601, 602, 603 };
-            List<int> backFaceIndexes = new List<int>() { 407, 408, 409, 507, 508, 509, 607, 608, 609 };
-            List<int> upFaceIndexes = new List<int>() { 404, 405, 406, 504, 505, 506, 604, 605, 606 };
-            List<int> downFaceIndexes = new List<int>() { 410, 411, 412, 510, 511, 512, 610, 611, 612 };
-            List<int> leftFaceIndexes = new List<int>() { 104, 105, 106, 204, 205, 206, 304, 305, 306 };
-            List<int> rightFaceIndexes = new List<int>() { 704, 705, 706, 804, 805, 806, 904, 905, 906 };
+            List<int> leftFaceIndexes = new List<int>() { 603, 602, 601, 503, 502, 501, 403, 402, 401 };
+            List<int> rightFaceIndexes = new List<int>() { 607, 608, 609, 507, 508, 509, 407, 408, 409 };
+            List<int> frontFaceIndexes = new List<int>() { 604, 504, 404, 605, 505, 405, 606, 506, 406 };
+            List<int> backFaceIndexes = new List<int>() { 612, 512, 412, 611, 511, 411, 610, 510, 410 };
+            List<int> upFaceIndexes = new List<int>() { 304, 204, 104, 305, 205, 105, 306, 206, 106 };
+            List<int> downFaceIndexes = new List<int>() { 704, 804, 904, 705, 805, 905, 706, 806, 906 };
 
 
             Face frontFace = faces.FirstOrDefault(f => f.Abbreviation == 'F');

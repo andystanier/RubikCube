@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace RubikCube
 {
 
@@ -23,6 +21,13 @@ namespace RubikCube
             {
                 PerformRotations();
             }
+            else if (arguments.Equals("test"))
+            {
+                PerformRotations();
+                new RotationTests(_faces.ToList()).CheckStateAfterFC();
+                new RotationTests(_faces.ToList()).CheckStateAfterFCRA();
+                //new RotationTests(_faces.ToList()).CheckFinalState();
+            }
         }
 
         public void Display(string? argument = null)
@@ -32,34 +37,34 @@ namespace RubikCube
 
         private void PerformRotations()
         {
-            foreach (var face in _faces!)
-            {
-                switch (face?.Name)
-                {
-                    case "Front":
-                        face.Positions.ToList().ForEach(p => p.ColourMatrix!.xyPlane = Colour.Red);
-                        break;
-                    case "Back":
-                        face.Positions.ToList().ForEach(p => p.ColourMatrix!.xyPlane = Colour.Orange);
-                        break;
-                    case "Up":
-                        face.Positions.ToList().ForEach(p => p.ColourMatrix!.xzPlane = Colour.Yellow);
-                        break;
-                    case "Down":
-                        face.Positions.ToList().ForEach(p => p.ColourMatrix!.xzPlane = Colour.Green);
-                        break;
-                    case "Left":
-                        face.Positions.ToList().ForEach(p => p.ColourMatrix!.yzPlane = Colour.Blue);
-                        break;
-                    case "Right":
-                        face.Positions.ToList().ForEach(p => p.ColourMatrix!.yzPlane = Colour.White);
-                        break;
-                    default:
-                        break;
-                }
-            }
-            // throw new NotImplementedException();
+            Rotation rotation = new Rotation(_faces);
 
+            // Rotations occur on a face.
+
+            // Front face clockwise 90 deg
+            // Right face anti-clockwise 90 deg
+            // Up face clockwise 90 deg
+            // Back face anti-clockwise 90 deg
+            // Left face clockwise 90 deg
+            // Down face anti-clockwise 90 deg
+
+            Face frontFace = _faces.FirstOrDefault(f => f.Abbreviation == 'F');
+            Face backFace = _faces.FirstOrDefault(f => f.Abbreviation == 'B');
+            Face upFace = _faces.FirstOrDefault(f => f.Abbreviation == 'U');
+            Face downFace = _faces.FirstOrDefault(f => f.Abbreviation == 'D');
+            Face leftFace = _faces.FirstOrDefault(f => f.Abbreviation == 'L');
+            Face rightFace = _faces.FirstOrDefault(f => f.Abbreviation == 'R');
+
+
+
+            rotation.Rotate(frontFace, Direction.Clockwise);
+
+            // frontFace.Rotate(Direction.Clockwise);
+            // rightFace.Rotate(Direction.AntiClockwise);
+            // upFace.Rotate(Direction.Clockwise);
+            // backFace.Rotate(Direction.AntiClockwise);
+            // leftFace.Rotate(Direction.Clockwise);
+            // downFace.Rotate(Direction.AntiClockwise);
         }
 
         private void InitialiseCube()

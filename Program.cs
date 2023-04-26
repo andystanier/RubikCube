@@ -15,6 +15,10 @@
             {
                 cube = new Cube(print, args[0]);
             }
+            else if (args.Any() && args[0].ToLower().Equals("test"))
+            {
+                cube = new Cube(new NoPrint(), args[0]);
+            }
             else if (args.Any() && !args[0].ToLower().Equals("init"))
             {
                 throw new ArgumentException($"Invalid Argument '{args[0]}'");

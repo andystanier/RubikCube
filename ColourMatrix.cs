@@ -5,6 +5,5 @@ namespace RubikCube
         public Colour xyPlane { get; set; }
         public Colour xzPlane { get; set; }
         public Colour yzPlane { get; set; }
-
     }
 }
