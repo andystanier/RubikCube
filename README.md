@@ -22,15 +22,15 @@ The layout shows the faces in the following order
 >``` 
 >                _____
 >               |     |
->               |  L  |                     
+>               |  U  |                     
 >               |_____|                         L - Left
 >         _____  _____  _____  _____            F - Front
 >        |     ||     ||     ||     |           U - Up
->        |  F  ||  U  ||  B  ||  D  |           B - Back
+>        |  L  ||  F  ||  R  ||  B  |           B - Back
 >        |_____||_____||_____||_____|           D - Down
 >                _____                          R - Right
 >               |     |                     
->               |  R  |
+>               |  D  |
 >               |_____|
 >
 >```

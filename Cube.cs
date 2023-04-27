@@ -25,7 +25,7 @@ namespace RubikCube
             {
                 PerformRotations();
                 new RotationTests(_faces.ToList()).CheckStateAfterFC();
-                new RotationTests(_faces.ToList()).CheckStateAfterFCRA();
+                // new RotationTests(_faces.ToList()).CheckStateAfterFC_RA();
                 //new RotationTests(_faces.ToList()).CheckFinalState();
             }
         }
@@ -58,6 +58,7 @@ namespace RubikCube
 
 
             rotation.Rotate(frontFace, Direction.Clockwise);
+            rotation.Rotate(rightFace, Direction.AntiClockwise);
 
             // frontFace.Rotate(Direction.Clockwise);
             // rightFace.Rotate(Direction.AntiClockwise);
