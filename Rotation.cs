@@ -44,7 +44,6 @@ namespace RubikCube
             {
                 /********************************************************************************************************************************/
                 // the xzPlane on the Up face where Z-index = -1 (Front) will change to be what the yzPlane was on the left face where Z index is -1 (Front) 
-                // the xzPlane on the Up face where Z-index = -1 (Front) will change to be what the yzPlane was on the left face where Z index is -1 (Front) 
                 IEnumerable<Colour>? xzUpColoursToChange = _faces?.FirstOrDefault(f => f.Abbreviation == 'U').Positions.Where(p => p.Coordinates!.Item3 == -1).Select(p => p.ColourMatrix).Select(m => m.xzPlane);
                 IEnumerable<Colour>? yzLeftFrontPlane = _faces?.FirstOrDefault(f => f.Abbreviation == 'L').Positions.Where(p => p.Coordinates!.Item3 == -1).Select(co => co.ColourMatrix).Select(m => m.yzPlane);
 
@@ -151,7 +150,7 @@ namespace RubikCube
 
         private void RotateRight(Direction direction)
         {
-            // The yzPlane will not change  - DONE
+            // The yzPlane will change all positions except the middle (100)
             // The xy and xz planes for each of U, F, D and B faces will change but only for the position where the X index is 1
             if (direction == Direction.Clockwise)  // for Clockwise Rotation.
             {
@@ -168,7 +167,19 @@ namespace RubikCube
                 /********************************************************************************************************************************/
                 // the xyPlane on the Back  face where X-index = 1 will change to be what the xzPlane was on the Down  face where X-index = 1 
                 /********************************************************************************************************************************/
+
+                // yzUpLeftCorner becomes what yzUpLeftCorner was
+                // yzUpRightCorner becomes what yzDownRightCorner was
+                // yzDownLeftCorner becomes what yzUpRightCorner was 
+                // yzDownRightCorner becomes what yzDownLeftCorner was
+
+                // yzUpEdge becomes what yzRightEdge was
+                // yzRightEdge becomes what yzDownEdge was
+                // yzDownEdge becomes what yzLeftEdge was 
+                // yzLeftEdge becomes what yzUpEdge was
             }
+
+
         }
 
         private void RotateUp(Direction direction)
