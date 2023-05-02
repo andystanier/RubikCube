@@ -38,7 +38,7 @@ namespace RubikCube
 
         private void RotateFront(Direction direction)
         {
-            // The xyPlane will for the F face will change for all positions except the middle (001).
+            // The xyPlane for the F face will change for all positions except the middle (001).
             // The xz and yz planes for each of L,R,U and D faces will change but only for the position where the Z index is -1
             if (direction == Direction.Clockwise)  // for Clockwise Rotation.
             {
@@ -74,15 +74,15 @@ namespace RubikCube
                 Colour xyLeftEdge = (Colour)_faces?.FirstOrDefault(f => f.Abbreviation == 'F').Positions.Where(p => p.Coordinates!.Item2 == 0 && p.Coordinates.Item1 == -1).Select(p => p.ColourMatrix).Select(m => m.xyPlane).First();
 
 
+                // the xzPlane on the Up    face where Z-index = -1 will change to be what the yzPlane was on the Left  face where Z-index = -1 
+                // the yzPlane on the Left  face where Z-index = -1 will change to be what the xzPlane was on the Down  face where Z-index = -1 
+                // the xzPlane on the Down  face where Z-index = -1 will change to be what the yzPlane was on the Right face where Z-index = -1 
+                // the yzPlane on the Right face where Z-index = -1 will change to be what the xzPlane was on the Up    face where Z-index = -1 
                 List<Colour> xzUpUpdatedColours = new List<Colour>();
                 List<Colour> yzLeftUpdatedColours = new List<Colour>();
                 List<Colour> xzDownUpdatedColours = new List<Colour>();
                 List<Colour> yzRightUpdatedColours = new List<Colour>();
 
-                // the xzPlane on the Up    face Front will change to be what the yzPlane was on the Left  face Front
-                // the yzPlane on the Left  face where Z-index = -1 will change to be what the xzPlane was on the Down  face where Z-index = -1 
-                // the xzPlane on the Down  face where Z-index = -1 will change to be what the yzPlane was on the Right face where Z-index = -1 
-                // the yzPlane on the Right face where Z-index = -1 will change to be what the xzPlane was on the Up    face where Z-index = -1 
 
                 for (int i = 0; i < 3; i++)
                 {
@@ -98,6 +98,7 @@ namespace RubikCube
                 yzRightColoursToChange = yzRightUpdatedColours.AsEnumerable();
 
 
+                // actaully set them.
                 _faces?.FirstOrDefault(f => f.Abbreviation == 'U').Positions.Where(p => p.Coordinates!.Item3 == -1).Where(p => p.Coordinates.Item2 == 1).Where(p => p.Coordinates.Item1 == -1).ToList().ForEach(p => p.ColourMatrix.xzPlane = xzUpColoursToChange.ToList()[0]);
                 _faces?.FirstOrDefault(f => f.Abbreviation == 'U').Positions.Where(p => p.Coordinates!.Item3 == -1).Where(p => p.Coordinates.Item2 == 1).Where(p => p.Coordinates.Item1 == 0).ToList().ForEach(p => p.ColourMatrix.xzPlane = xzUpColoursToChange.ToList()[1]);
                 _faces?.FirstOrDefault(f => f.Abbreviation == 'U').Positions.Where(p => p.Coordinates!.Item3 == -1).Where(p => p.Coordinates.Item2 == 1).Where(p => p.Coordinates.Item1 == 1).ToList().ForEach(p => p.ColourMatrix.xzPlane = xzUpColoursToChange.ToList()[2]);
@@ -150,7 +151,7 @@ namespace RubikCube
 
         private void RotateRight(Direction direction)
         {
-            // The yzPlane will change all positions except the middle (100)
+            // The yzPlane for the Right face will change all positions except the middle (100)
             // The xy and xz planes for each of U, F, D and B faces will change but only for the position where the X index is 1
             if (direction == Direction.Clockwise)  // for Clockwise Rotation.
             {
@@ -160,23 +161,100 @@ namespace RubikCube
             {
                 /********************************************************************************************************************************/
                 // the xzPlane on the Up    face where X-index = 1 will change to be what the xyPlane was on the Back  face where X-index = 1 
+                IEnumerable<Colour>? xzUpColoursToChange = _faces?.FirstOrDefault(f => f.Abbreviation == 'U').Positions.Where(p => p.Coordinates!.Item1 == 1).Select(p => p.ColourMatrix).Select(m => m.xzPlane);
+                IEnumerable<Colour>? xyBackRightPlane = _faces?.FirstOrDefault(f => f.Abbreviation == 'B').Positions.Where(p => p.Coordinates!.Item1 == 1).Select(co => co.ColourMatrix).Select(m => m.xyPlane);
                 /********************************************************************************************************************************/
                 // the xyPlane on the Front face where X-index = 1 will change to be what the xzPlane was on the Up    face where X-index = 1 
+                IEnumerable<Colour>? xyFrontColoursToChange = _faces?.FirstOrDefault(f => f.Abbreviation == 'F').Positions.Where(p => p.Coordinates!.Item1 == 1).Select(p => p.ColourMatrix).Select(m => m.xyPlane);
+                IEnumerable<Colour>? xzUpRightPlane = _faces?.FirstOrDefault(f => f.Abbreviation == 'U').Positions.Where(p => p.Coordinates!.Item1 == 1).Select(co => co.ColourMatrix).Select(m => m.xzPlane);
                 /********************************************************************************************************************************/
                 // the xzPlane on the Down  face where X-index = 1 will change to be what the xyPlane was on the Front face where X-index = 1 
+                IEnumerable<Colour>? xzDownColoursToChange = _faces?.FirstOrDefault(f => f.Abbreviation == 'D').Positions.Where(p => p.Coordinates!.Item1 == 1).Select(p => p.ColourMatrix).Select(m => m.xzPlane);
+                IEnumerable<Colour>? xyFrontRightPlane = _faces?.FirstOrDefault(f => f.Abbreviation == 'F').Positions.Where(p => p.Coordinates!.Item1 == 1).Select(co => co.ColourMatrix).Select(m => m.xyPlane);
                 /********************************************************************************************************************************/
                 // the xyPlane on the Back  face where X-index = 1 will change to be what the xzPlane was on the Down  face where X-index = 1 
+                IEnumerable<Colour>? xyBackColoursToChange = _faces?.FirstOrDefault(f => f.Abbreviation == 'B').Positions.Where(p => p.Coordinates!.Item1 == 1).Select(p => p.ColourMatrix).Select(m => m.xyPlane);
+                IEnumerable<Colour>? xzDownRightPlane = _faces?.FirstOrDefault(f => f.Abbreviation == 'D').Positions.Where(p => p.Coordinates!.Item1 == 1).Select(co => co.ColourMatrix).Select(m => m.xzPlane);
                 /********************************************************************************************************************************/
 
-                // yzUpLeftCorner becomes what yzUpLeftCorner was
+                // yzPlane
+                Colour yzUpLeftCorner = (Colour)_faces?.FirstOrDefault(f => f.Abbreviation == 'R').Positions.Where(p => p.Coordinates!.Item2 == 1 && p.Coordinates.Item3 == -1).Select(p => p.ColourMatrix).Select(m => m.yzPlane).First();
+                Colour yzUpRightCorner = (Colour)_faces?.FirstOrDefault(f => f.Abbreviation == 'R').Positions.Where(p => p.Coordinates!.Item2 == 1 && p.Coordinates.Item3 == 1).Select(p => p.ColourMatrix).Select(m => m.yzPlane).First();
+                Colour yzDownLeftCorner = (Colour)_faces?.FirstOrDefault(f => f.Abbreviation == 'R').Positions.Where(p => p.Coordinates!.Item2 == -1 && p.Coordinates.Item3 == -1).Select(p => p.ColourMatrix).Select(m => m.yzPlane).First();
+                Colour yzDownRightCorner = (Colour)_faces?.FirstOrDefault(f => f.Abbreviation == 'R').Positions.Where(p => p.Coordinates!.Item2 == -1 && p.Coordinates.Item3 == 1).Select(p => p.ColourMatrix).Select(m => m.yzPlane).First();
+
+                Colour yzUpEdge = (Colour)_faces?.FirstOrDefault(f => f.Abbreviation == 'R').Positions.Where(p => p.Coordinates!.Item2 == 1 && p.Coordinates.Item3 == 0).Select(p => p.ColourMatrix).Select(m => m.yzPlane).First();
+                Colour yzRightEdge = (Colour)_faces?.FirstOrDefault(f => f.Abbreviation == 'R').Positions.Where(p => p.Coordinates!.Item2 == 0 && p.Coordinates.Item3 == 1).Select(p => p.ColourMatrix).Select(m => m.yzPlane).First();
+                Colour yzDownEdge = (Colour)_faces?.FirstOrDefault(f => f.Abbreviation == 'R').Positions.Where(p => p.Coordinates!.Item2 == -1 && p.Coordinates.Item3 == 0).Select(p => p.ColourMatrix).Select(m => m.yzPlane).First();
+                Colour yzLeftEdge = (Colour)_faces?.FirstOrDefault(f => f.Abbreviation == 'R').Positions.Where(p => p.Coordinates!.Item2 == 0 && p.Coordinates.Item3 == -1).Select(p => p.ColourMatrix).Select(m => m.yzPlane).First();
+
+
+
+                // the xzPlane on the Up    face where X-index = 1 will change to be what the xyPlane was on the Back  face where X-index = 1 
+                // the xyPlane on the Front face where X-index = 1 will change to be what the xzPlane was on the Up    face where X-index = 1 
+                // the xzPlane on the Down  face where X-index = 1 will change to be what the xyPlane was on the Front face where X-index = 1 
+                // the xyPlane on the Back  face where X-index = 1 will change to be what the xzPlane was on the Down  face where X-index = 1 
+                List<Colour> xzUpUpdatedColours = new List<Colour>();
+                List<Colour> xyFrontUpdatedColours = new List<Colour>();
+                List<Colour> xzDownUpdatedColours = new List<Colour>();
+                List<Colour> xyBackUpdatedColours = new List<Colour>();
+
+
+                for (int i = 0; i < 3; i++)
+                {
+                    xzUpUpdatedColours.Add(xyBackRightPlane.ToList()[i]);
+                    xyFrontUpdatedColours.Add(xzUpRightPlane.ToList()[i]);
+                    xzDownUpdatedColours.Add(xyFrontRightPlane.ToList()[i]);
+                    xyBackUpdatedColours.Add(xzDownRightPlane.ToList()[i]);
+                }
+
+                xzUpColoursToChange = xzUpUpdatedColours.AsEnumerable();
+                xyFrontColoursToChange = xyFrontUpdatedColours.AsEnumerable();
+                xzDownColoursToChange = xzDownUpdatedColours.AsEnumerable();
+                xyBackColoursToChange = xyBackUpdatedColours.AsEnumerable();
+
+                // the xzPlane on the Up    face where X-index = 1 will change to be what the xyPlane was on the Back  face where X-index = 1 
+                _faces?.FirstOrDefault(f => f.Abbreviation == 'U').Positions.Where(p => p.Coordinates!.Item1 == 1).Where(p => p.Coordinates.Item2 == 1).Where(p => p.Coordinates.Item3 == -1).ToList().ForEach(p => p.ColourMatrix.xzPlane = xzUpColoursToChange.ToList()[0]);
+                _faces?.FirstOrDefault(f => f.Abbreviation == 'U').Positions.Where(p => p.Coordinates!.Item1 == 1).Where(p => p.Coordinates.Item2 == 1).Where(p => p.Coordinates.Item3 == 0).ToList().ForEach(p => p.ColourMatrix.xzPlane = xzUpColoursToChange.ToList()[1]);
+                _faces?.FirstOrDefault(f => f.Abbreviation == 'U').Positions.Where(p => p.Coordinates!.Item1 == 1).Where(p => p.Coordinates.Item2 == 1).Where(p => p.Coordinates.Item3 == 1).ToList().ForEach(p => p.ColourMatrix.xzPlane = xzUpColoursToChange.ToList()[2]);
+
+                // the xyPlane on the Front face where X-index = 1 will change to be what the xzPlane was on the Up    face where X-index = 1 
+                _faces?.FirstOrDefault(f => f.Abbreviation == 'F').Positions.Where(p => p.Coordinates!.Item1 == 1).Where(p => p.Coordinates.Item2 == -1).Where(p => p.Coordinates.Item3 == -1).ToList().ForEach(p => p.ColourMatrix.xyPlane = xyFrontColoursToChange.ToList()[0]);
+                _faces?.FirstOrDefault(f => f.Abbreviation == 'F').Positions.Where(p => p.Coordinates!.Item1 == 1).Where(p => p.Coordinates.Item2 == 0).Where(p => p.Coordinates.Item3 == -1).ToList().ForEach(p => p.ColourMatrix.xyPlane = xyFrontColoursToChange.ToList()[1]);
+                _faces?.FirstOrDefault(f => f.Abbreviation == 'F').Positions.Where(p => p.Coordinates!.Item1 == 1).Where(p => p.Coordinates.Item2 == 1).Where(p => p.Coordinates.Item3 == -1).ToList().ForEach(p => p.ColourMatrix.xyPlane = xyFrontColoursToChange.ToList()[2]);
+
+                // the xzPlane on the Down  face where X-index = 1 will change to be what the xyPlane was on the Front face where X-index = 1 
+                _faces?.FirstOrDefault(f => f.Abbreviation == 'D').Positions.Where(p => p.Coordinates!.Item1 == 1).Where(p => p.Coordinates.Item2 == -1).Where(p => p.Coordinates.Item3 == -1).ToList().ForEach(p => p.ColourMatrix.xzPlane = xzDownColoursToChange.ToList()[0]);
+                _faces?.FirstOrDefault(f => f.Abbreviation == 'D').Positions.Where(p => p.Coordinates!.Item1 == 1).Where(p => p.Coordinates.Item2 == -1).Where(p => p.Coordinates.Item3 == 0).ToList().ForEach(p => p.ColourMatrix.xzPlane = xzDownColoursToChange.ToList()[1]);
+                _faces?.FirstOrDefault(f => f.Abbreviation == 'D').Positions.Where(p => p.Coordinates!.Item1 == 1).Where(p => p.Coordinates.Item2 == -1).Where(p => p.Coordinates.Item3 == 1).ToList().ForEach(p => p.ColourMatrix.xzPlane = xzDownColoursToChange.ToList()[2]);
+
+                // the xyPlane on the Back  face where X-index = 1 will change to be what the xzPlane was on the Down  face where X-index = 1 
+                _faces?.FirstOrDefault(f => f.Abbreviation == 'B').Positions.Where(p => p.Coordinates!.Item1 == 1).Where(p => p.Coordinates.Item2 == -1).Where(p => p.Coordinates.Item3 == 1).ToList().ForEach(p => p.ColourMatrix.xyPlane = xyBackColoursToChange.ToList()[0]);
+                _faces?.FirstOrDefault(f => f.Abbreviation == 'B').Positions.Where(p => p.Coordinates!.Item1 == 1).Where(p => p.Coordinates.Item2 == 0).Where(p => p.Coordinates.Item3 == 1).ToList().ForEach(p => p.ColourMatrix.xyPlane = xyBackColoursToChange.ToList()[1]);
+                _faces?.FirstOrDefault(f => f.Abbreviation == 'B').Positions.Where(p => p.Coordinates!.Item1 == 1).Where(p => p.Coordinates.Item2 == 1).Where(p => p.Coordinates.Item3 == 1).ToList().ForEach(p => p.ColourMatrix.xyPlane = xyBackColoursToChange.ToList()[2]);
+
+
+
+
+                // yzUpLeftCorner becomes what yzUpRightCorner was
                 // yzUpRightCorner becomes what yzDownRightCorner was
-                // yzDownLeftCorner becomes what yzUpRightCorner was 
+                // yzDownLeftCorner becomes what yzUpLeftCorner was 
                 // yzDownRightCorner becomes what yzDownLeftCorner was
+                _faces?.FirstOrDefault(f => f.Abbreviation == 'R').Positions.Where(p => p.Coordinates!.Item2 == 1 && p.Coordinates.Item3 == -1).Select(p => p.ColourMatrix).ToList().ForEach(m => m.yzPlane = yzUpRightCorner);
+                _faces?.FirstOrDefault(f => f.Abbreviation == 'R').Positions.Where(p => p.Coordinates!.Item2 == 1 && p.Coordinates.Item3 == 1).Select(p => p.ColourMatrix).ToList().ForEach(m => m.yzPlane = yzDownRightCorner);
+                _faces?.FirstOrDefault(f => f.Abbreviation == 'R').Positions.Where(p => p.Coordinates!.Item2 == -1 && p.Coordinates.Item3 == -1).Select(p => p.ColourMatrix).ToList().ForEach(m => m.yzPlane = yzUpLeftCorner);
+                _faces?.FirstOrDefault(f => f.Abbreviation == 'R').Positions.Where(p => p.Coordinates!.Item2 == -1 && p.Coordinates.Item3 == 1).Select(p => p.ColourMatrix).ToList().ForEach(m => m.yzPlane = yzDownLeftCorner);
+
 
                 // yzUpEdge becomes what yzRightEdge was
                 // yzRightEdge becomes what yzDownEdge was
                 // yzDownEdge becomes what yzLeftEdge was 
                 // yzLeftEdge becomes what yzUpEdge was
+                _faces?.FirstOrDefault(f => f.Abbreviation == 'R').Positions.Where(p => p.Coordinates!.Item2 == 1 && p.Coordinates.Item3 == 0).Select(p => p.ColourMatrix).ToList().ForEach(m => m.yzPlane = yzRightEdge);
+                _faces?.FirstOrDefault(f => f.Abbreviation == 'R').Positions.Where(p => p.Coordinates!.Item2 == 0 && p.Coordinates.Item3 == 1).Select(p => p.ColourMatrix).ToList().ForEach(m => m.yzPlane = yzDownEdge);
+                _faces?.FirstOrDefault(f => f.Abbreviation == 'R').Positions.Where(p => p.Coordinates!.Item2 == -1 && p.Coordinates.Item3 == 0).Select(p => p.ColourMatrix).ToList().ForEach(m => m.yzPlane = yzLeftEdge);
+                _faces?.FirstOrDefault(f => f.Abbreviation == 'R').Positions.Where(p => p.Coordinates!.Item2 == 0 && p.Coordinates.Item3 == -1).Select(p => p.ColourMatrix).ToList().ForEach(m => m.yzPlane = yzUpEdge);
+
             }
 
 
@@ -247,6 +325,7 @@ namespace RubikCube
                 // We aren't performing a Left face anticlockwise in this example so this was skipped for time reasons
             }
         }
+
         private void RotateDown(Direction direction)
         {
             // The yzPlane will not change

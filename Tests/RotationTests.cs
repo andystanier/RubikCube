@@ -11,7 +11,7 @@ namespace RubikCube
             ConnectPositionsAndColoursToGrid();
         }
 
-        public void ShowOutput(Dictionary<int, string> answer)
+        public void ShowOutput(Dictionary<int, string> answer, string changeMade)
         {
 
             Dictionary<int, string> wrong = new Dictionary<int, string>();
@@ -27,7 +27,7 @@ namespace RubikCube
                 }
             }
             string formattedMessage = isStateCorrect ? "" : "in";
-            Console.WriteLine($"The solution is {formattedMessage}correct");
+            Console.WriteLine($"The solution is {formattedMessage}correct after the following changes: {changeMade}");
 
             if (!isStateCorrect)
             {
@@ -36,28 +36,29 @@ namespace RubikCube
                 {
                     Console.Write(item);
                     Console.WriteLine($" Should be {answer[item.Key]}");
-
                 }
-
             }
         }
 
         public void CheckStateAfterFC()
         {
             Dictionary<int, string> answer = FClock();
-            ShowOutput(answer);
+            string changeMade = "Front Clockwise";
+            ShowOutput(answer, changeMade);
         }
 
         public void CheckStateAfterFC_RA()
         {
             Dictionary<int, string> answer = FClock_RAnti();
-            ShowOutput(answer);
+            string changeMade = "Front Clockwise, Right AntiClockwise";
+            ShowOutput(answer, changeMade);
         }
 
         public void CheckFinalState()
         {
             Dictionary<int, string> answer = TheAnswer();
-            ShowOutput(answer);
+            string changeMade = "Front Clockwise, Right AntiClockwise, Up Clockwise, Back AntiClockwise, Left Clockwise, Down AntiClockwise";
+            ShowOutput(answer, changeMade);
         }
 
         private void ConnectPositionsAndColoursToGrid()
@@ -104,6 +105,7 @@ namespace RubikCube
 
             _coloursInGrid = coloursInGrid;
         }
+
         private Dictionary<int, string> FClock()
         {
             return new Dictionary<int, string>(){

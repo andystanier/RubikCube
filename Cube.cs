@@ -15,8 +15,8 @@ namespace RubikCube
             _faces = new List<Face>();
             InitialiseCube();
 
-            // Default behaviour is to apply the rotations
-            // By providing an argument at the console interface, we can display the initial state
+            // This is not the way to perform tests. Ideally I would have another project with a testing suite etc. but time...
+            // By providing an argument at the console interface, we can see different situations
             if (arguments == null)
             {
                 PerformRotations();
@@ -24,9 +24,13 @@ namespace RubikCube
             else if (arguments.Equals("test"))
             {
                 PerformRotations();
-                new RotationTests(_faces.ToList()).CheckStateAfterFC();
-                // new RotationTests(_faces.ToList()).CheckStateAfterFC_RA();
+                // new RotationTests(_faces.ToList()).CheckStateAfterFC();
+                new RotationTests(_faces.ToList()).CheckStateAfterFC_RA();
                 //new RotationTests(_faces.ToList()).CheckFinalState();
+            }
+            else if (arguments.Equals("init"))
+            {
+                // Don't perform rotations, but print the initial state.
             }
         }
 
@@ -55,17 +59,12 @@ namespace RubikCube
             Face leftFace = _faces.FirstOrDefault(f => f.Abbreviation == 'L');
             Face rightFace = _faces.FirstOrDefault(f => f.Abbreviation == 'R');
 
-
-
             rotation.Rotate(frontFace, Direction.Clockwise);
             rotation.Rotate(rightFace, Direction.AntiClockwise);
-
-            // frontFace.Rotate(Direction.Clockwise);
-            // rightFace.Rotate(Direction.AntiClockwise);
-            // upFace.Rotate(Direction.Clockwise);
-            // backFace.Rotate(Direction.AntiClockwise);
-            // leftFace.Rotate(Direction.Clockwise);
-            // downFace.Rotate(Direction.AntiClockwise);
+            // rotation.Rotate(upFace, Direction.Clockwise);
+            // rotation.Rotate(backFace, Direction.AntiClockwise);
+            // rotation.Rotate(leftFace, Direction.Clockwise);
+            // rotation.Rotate(downFace, Direction.AntiClockwise);
         }
 
         private void InitialiseCube()
@@ -96,7 +95,6 @@ namespace RubikCube
                 }
             }
             _positions = positions.AsEnumerable<Position>();
-
         }
 
         private void CreateFaces()
@@ -172,8 +170,5 @@ namespace RubikCube
                 }
             }
         }
-
-
-
     }
 }

@@ -5,6 +5,6 @@ namespace RubikCube
         string Name { get; set; }
         char Abbreviation { get; set; }
         IEnumerable<Position> Positions { get; set; }
-        void Rotate(Direction direction);
+        // void Rotate(Direction direction);
     }
 }

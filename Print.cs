@@ -49,26 +49,26 @@ namespace RubikCube
                     sb.AppendLine();
 
 
-                    for (int j = 1; j <= cols; j++)
-                    {
-                        int number = (i * 100 + j);
-                        if (blanks.Contains(number))
-                            sb.Append($"            ");
-                        else
-                            sb.Append($"|   {number}    |");
-                    }
-                    sb.AppendLine();
+                    // for (int j = 1; j <= cols; j++)
+                    // {
+                    //     int number = (i * 100 + j);
+                    //     if (blanks.Contains(number))
+                    //         sb.Append($"            ");
+                    //     else
+                    //         sb.Append($"|   {number}    |");
+                    // }
+                    // sb.AppendLine();
 
 
-                    for (int j = 1; j <= cols; j++)
-                    {
-                        int number = i * 100 + j;
-                        if (blanks.Contains(number))
-                            sb.Append($"            ");
-                        else
-                            sb.Append($"| {_positionInGrid[number]} |");
-                    }
-                    sb.AppendLine();
+                    // for (int j = 1; j <= cols; j++)
+                    // {
+                    //     int number = i * 100 + j;
+                    //     if (blanks.Contains(number))
+                    //         sb.Append($"            ");
+                    //     else
+                    //         sb.Append($"| {_positionInGrid[number]} |");
+                    // }
+                    // sb.AppendLine();
 
                     for (int j = 1; j <= cols; j++)
                     {

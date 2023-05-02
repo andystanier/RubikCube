@@ -17,7 +17,7 @@
             }
             else if (args.Any() && args[0].ToLower().Equals("test"))
             {
-                cube = new Cube(new NoPrint(), args[0]);
+                cube = new Cube(null, args[0]);
             }
             else if (args.Any() && !args[0].ToLower().Equals("init"))
             {
@@ -31,13 +31,5 @@
             // Now Display it
             cube.Display();
         }
-
-        // static void Main(string[] args)
-        // {
-        //     var test = new GetColourFromPositionTest();
-        //     System.Console.WriteLine(test.GetColourFromValidPosition());
-
-
-        // }
     }
 }
