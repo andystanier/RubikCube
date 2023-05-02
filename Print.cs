@@ -129,26 +129,26 @@ namespace RubikCube
             List<int> downFaceIndexes = new List<int>() { 704, 804, 904, 705, 805, 905, 706, 806, 906 };
 
 
-            Face frontFace = faces.FirstOrDefault(f => f.Abbreviation == 'F');
-            Face backFace = faces.FirstOrDefault(f => f.Abbreviation == 'B');
-            Face upFace = faces.FirstOrDefault(f => f.Abbreviation == 'U');
-            Face downFace = faces.FirstOrDefault(f => f.Abbreviation == 'D');
-            Face leftFace = faces.FirstOrDefault(f => f.Abbreviation == 'L');
-            Face rightFace = faces.FirstOrDefault(f => f.Abbreviation == 'R');
+            Face frontFace = faces.First(f => f.Abbreviation == 'F');
+            Face backFace = faces.First(f => f.Abbreviation == 'B');
+            Face upFace = faces.First(f => f.Abbreviation == 'U');
+            Face downFace = faces.First(f => f.Abbreviation == 'D');
+            Face leftFace = faces.First(f => f.Abbreviation == 'L');
+            Face rightFace = faces.First(f => f.Abbreviation == 'R');
 
-            List<string> frontPositions = frontFace.Positions.Select(p => $"{p.Coordinates.Item1:+0;-#},{p.Coordinates.Item2:+0;-#},{p.Coordinates.Item3:+0;-#}").ToList();
-            List<string> backPositions = backFace.Positions.Select(p => $"{p.Coordinates.Item1:+0;-#},{p.Coordinates.Item2:+0;-#},{p.Coordinates.Item3:+0;-#}").ToList();
-            List<string> upPositions = upFace.Positions.Select(p => $"{p.Coordinates.Item1:+0;-#},{p.Coordinates.Item2:+0;-#},{p.Coordinates.Item3:+0;-#}").ToList();
-            List<string> downPositions = downFace.Positions.Select(p => $"{p.Coordinates.Item1:+0;-#},{p.Coordinates.Item2:+0;-#},{p.Coordinates.Item3:+0;-#}").ToList();
-            List<string> leftPositions = leftFace.Positions.Select(p => $"{p.Coordinates.Item1:+0;-#},{p.Coordinates.Item2:+0;-#},{p.Coordinates.Item3:+0;-#}").ToList();
-            List<string> rightPositions = rightFace.Positions.Select(p => $"{p.Coordinates.Item1:+0;-#},{p.Coordinates.Item2:+0;-#},{p.Coordinates.Item3:+0;-#}").ToList();
+            List<string> frontPositions = frontFace.Positions.Select(p => $"{p?.Coordinates?.Item1:+0;-#},{p?.Coordinates?.Item2:+0;-#},{p?.Coordinates?.Item3:+0;-#}").ToList();
+            List<string> backPositions = backFace.Positions.Select(p => $"{p?.Coordinates?.Item1:+0;-#},{p?.Coordinates?.Item2:+0;-#},{p?.Coordinates?.Item3:+0;-#}").ToList();
+            List<string> upPositions = upFace.Positions.Select(p => $"{p?.Coordinates?.Item1:+0;-#},{p?.Coordinates?.Item2:+0;-#},{p?.Coordinates?.Item3:+0;-#}").ToList();
+            List<string> downPositions = downFace.Positions.Select(p => $"{p?.Coordinates?.Item1:+0;-#},{p?.Coordinates?.Item2:+0;-#},{p?.Coordinates?.Item3:+0;-#}").ToList();
+            List<string> leftPositions = leftFace.Positions.Select(p => $"{p?.Coordinates?.Item1:+0;-#},{p?.Coordinates?.Item2:+0;-#},{p?.Coordinates?.Item3:+0;-#}").ToList();
+            List<string> rightPositions = rightFace.Positions.Select(p => $"{p?.Coordinates?.Item1:+0;-#},{p?.Coordinates?.Item2:+0;-#},{p?.Coordinates?.Item3:+0;-#}").ToList();
 
-            List<string> frontColours = frontFace.Positions.Select(p => $"{p.ColourMatrix.xyPlane.ToAbbr()}").ToList();
-            List<string> backColours = backFace.Positions.Select(p => $"{p.ColourMatrix.xyPlane.ToAbbr()}").ToList();
-            List<string> upColours = upFace.Positions.Select(p => $"{p.ColourMatrix.xzPlane.ToAbbr()}").ToList();
-            List<string> downColours = downFace.Positions.Select(p => $"{p.ColourMatrix.xzPlane.ToAbbr()}").ToList();
-            List<string> leftColours = leftFace.Positions.Select(p => $"{p.ColourMatrix.yzPlane.ToAbbr()}").ToList();
-            List<string> rightColours = rightFace.Positions.Select(p => $"{p.ColourMatrix.yzPlane.ToAbbr()}").ToList();
+            List<string> frontColours = frontFace.Positions.Select(p => $"{p?.ColourMatrix?.xyPlane.ToAbbr()}").ToList();
+            List<string> backColours = backFace.Positions.Select(p => $"{p?.ColourMatrix?.xyPlane.ToAbbr()}").ToList();
+            List<string> upColours = upFace.Positions.Select(p => $"{p?.ColourMatrix?.xzPlane.ToAbbr()}").ToList();
+            List<string> downColours = downFace.Positions.Select(p => $"{p?.ColourMatrix?.xzPlane.ToAbbr()}").ToList();
+            List<string> leftColours = leftFace.Positions.Select(p => $"{p?.ColourMatrix?.yzPlane.ToAbbr()}").ToList();
+            List<string> rightColours = rightFace.Positions.Select(p => $"{p?.ColourMatrix?.yzPlane.ToAbbr()}").ToList();
 
 
             for (int i = 0; i < 9; i++)

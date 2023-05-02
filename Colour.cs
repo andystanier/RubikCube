@@ -18,6 +18,4 @@ namespace RubikCube
             return colour.ToString().ToCharArray().First();
         }
     }
-
-
 }

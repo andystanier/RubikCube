@@ -44,27 +44,22 @@ namespace RubikCube
             Rotation rotation = new Rotation(_faces);
 
             // Rotations occur on a face.
+            if (_faces != null)
+            {
+                Face frontFace = _faces.First(f => f.Abbreviation == 'F');
+                Face backFace = _faces.First(f => f.Abbreviation == 'B');
+                Face upFace = _faces.First(f => f.Abbreviation == 'U');
+                Face downFace = _faces.First(f => f.Abbreviation == 'D');
+                Face leftFace = _faces.First(f => f.Abbreviation == 'L');
+                Face rightFace = _faces.First(f => f.Abbreviation == 'R');
 
-            // Front face clockwise 90 deg
-            // Right face anti-clockwise 90 deg
-            // Up face clockwise 90 deg
-            // Back face anti-clockwise 90 deg
-            // Left face clockwise 90 deg
-            // Down face anti-clockwise 90 deg
-
-            Face frontFace = _faces.FirstOrDefault(f => f.Abbreviation == 'F');
-            Face backFace = _faces.FirstOrDefault(f => f.Abbreviation == 'B');
-            Face upFace = _faces.FirstOrDefault(f => f.Abbreviation == 'U');
-            Face downFace = _faces.FirstOrDefault(f => f.Abbreviation == 'D');
-            Face leftFace = _faces.FirstOrDefault(f => f.Abbreviation == 'L');
-            Face rightFace = _faces.FirstOrDefault(f => f.Abbreviation == 'R');
-
-            rotation.Rotate(frontFace, Direction.Clockwise);
-            rotation.Rotate(rightFace, Direction.AntiClockwise);
-            // rotation.Rotate(upFace, Direction.Clockwise);
-            // rotation.Rotate(backFace, Direction.AntiClockwise);
-            // rotation.Rotate(leftFace, Direction.Clockwise);
-            // rotation.Rotate(downFace, Direction.AntiClockwise);
+                rotation.Rotate(frontFace, Direction.Clockwise);
+                rotation.Rotate(rightFace, Direction.AntiClockwise);
+                // rotation.Rotate(upFace, Direction.Clockwise);
+                // rotation.Rotate(backFace, Direction.AntiClockwise);
+                // rotation.Rotate(leftFace, Direction.Clockwise);
+                // rotation.Rotate(downFace, Direction.AntiClockwise);
+            }
         }
 
         private void InitialiseCube()
